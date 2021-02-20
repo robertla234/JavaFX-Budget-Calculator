@@ -43,10 +43,10 @@ public class Main extends Application {
         BorderPane entryPane = new BorderPane();
         entryPane.setStyle("-fx-background-color: #00ff00");
             //Display Box for Current-In-Budget
-        Box CalcSum = new Box();
-        CalcSum.setHeight(20);
-        CalcSum.setWidth(100);
-        CalcSum.setStyle("-fx-padding: 10 10 10 10;");
+        Label CalcSum = new Label("100000");
+        CalcSum.setMinHeight(20);
+        CalcSum.setMinWidth(100);
+        CalcSum.setStyle("-fx-padding: 10 10 10 10; -fx-background-color: #B3B3B3;");
         entryPane.setTop(CalcSum);
         entryPane.setMargin(CalcSum, new Insets(10));
         entryPane.setAlignment(CalcSum, Pos.CENTER);
@@ -68,9 +68,9 @@ public class Main extends Application {
         navBar.setSpacing(10);
         navBar.setStyle("-fx-background-color: #3A3B3C;");
         Button btnHome = makeButton("Home");
-        Button btnCalc = makeButton("Calculator");
+        Button btnCalc = makeButton("Tracker");
         navBar.getChildren().addAll(btnHome, btnCalc);
-        //add navBar to Left side
+            //add navBar to Left side
         rootBPane.setLeft(navBar);
         btnHome.setOnAction(new EventHandler<ActionEvent>() {
             @Override
