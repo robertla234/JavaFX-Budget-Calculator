@@ -1,0 +1,19 @@
+DROP DATAVERSE JavaFXBudget IF EXISTS;
+CREATE DATAVERSE JavaFXBudget;
+USE JavaFXBudget;
+
+CREATE TYPE BudEntryType AS {
+entryDate: date,
+entryAmount: int
+};
+
+CREATE TYPE PersonType AS {
+username: string,
+password: string,
+initial: boolean,
+initialAmount: int?,
+budgetLog: {{BudEntryType}}
+};
+
+CREATE DATASET Person(PersonType)
+    PRIMARY KEY username;
