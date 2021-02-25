@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/JavaFX Budget Calculator.iml" filepath="$PROJECT_DIR$/JavaFX Budget Calculator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../JavaFX/javafx-sdk-11.0.2/lib/lib.iml" filepath="$PROJECT_DIR$/../../JavaFX/javafx-sdk-11.0.2/lib/lib.iml" />
     </modules>
   </component>
 </project>

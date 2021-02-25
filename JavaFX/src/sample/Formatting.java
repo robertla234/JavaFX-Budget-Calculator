@@ -1,6 +1,8 @@
 package sample;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -34,5 +36,12 @@ class Formatting {
         PasswordField txtflPass = new PasswordField();
         txtflPass.setPromptText("password");
         return txtflPass;
+    }
+
+    public static Label makeLabel(String lbText){
+        Label lbl = new Label(lbText);
+        lbl.setPadding(new Insets(5, 5, 5, 5));
+        lbl.setStyle("-fx-background-color: #B3B3B3");
+        return lbl;
     }
 }

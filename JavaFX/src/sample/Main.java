@@ -27,6 +27,7 @@ public class Main extends Application {
         //pre-initialize of buttons for Sign In color change
         Button btnHome = Formatting.makeButton("Home");
         Button btnCalc = Formatting.makeButtonHidden("Tracker");
+        Button btnProfile = Formatting.makeButtonHidden("Profile");
 
         //Main Scene Area setup
         //^--- Home ---
@@ -35,9 +36,7 @@ public class Main extends Application {
         homePane.setAlignment(Pos.CENTER);
         homePane.setSpacing(0);
             //Welcome Display for Home
-        Label welHomeLabel = new Label("Welcome To Home");
-        welHomeLabel.setPadding(new Insets(5, 5, 5, 5));
-        welHomeLabel.setStyle("-fx-background-color: #B3B3B3");
+        Label welHomeLabel = Formatting.makeLabel("Welcome To Home");
         homePane.setMargin(welHomeLabel, new Insets(5, 5, 25, 5));
             //Username Input
         TextField userN = Formatting.makeTextField("username");
@@ -57,17 +56,56 @@ public class Main extends Application {
                 System.out.println(username + " " + password);
                 SignedIn = true;
                 btnCalc.setVisible(true);
+                btnProfile.setVisible(true);
             }
         });
-        Button regisBtn = new Button("Register");
+        Button regisBtn = Formatting.makeButton("Register");
         homePane.setMargin(regisBtn, new Insets(5, 5, 5, 5));
         regisBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 //TODO open new registration window
+
+                VBox regLayout = new VBox();
+                regLayout.setStyle("-fx-background-color: #af00af");
+                regLayout.setAlignment(Pos.CENTER);
+                regLayout.setSpacing(0);
+
+                Label regWelcome = Formatting.makeLabel("Register New User");
+                regLayout.setMargin(regWelcome, new Insets(5, 5, 25, 5));
+
+                TextField userN = Formatting.makeTextField("username");
+                regLayout.setMargin(userN, new Insets(5, 20, 5, 20));
+
+                TextField passW = Formatting.makeTextFieldPass();
+                regLayout.setMargin(passW, new Insets(5, 20, 5, 20));
+
+                TextField name = Formatting.makeTextField("Full Name");
+                regLayout.setMargin(name, new Insets(5, 20, 5, 20));
+
+                TextField initialAmount = Formatting.makeTextField("initial amount");
+                regLayout.setMargin(initialAmount, new Insets(5, 20, 5, 20));
+
+                Button regisBtn = Formatting.makeButton("Register");
+                regLayout.setMargin(regisBtn, new Insets(5, 5, 5, 5));
+                regisBtn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        //TODO import action here
+                    }
+                });
+
+                        regLayout.getChildren().addAll(regWelcome, name, userN, passW, initialAmount);
+                Scene regScene = new Scene(regLayout, 400, 300);
+
+                //New Window (Stage)
+                Stage newWindow = new Stage();
+                newWindow.setTitle("Register New User");
+                newWindow.setScene(regScene);
+                newWindow.show();
             }
         });
-        homePane.getChildren().addAll(welHomeLabel, userN, passW, signInBtn);
+        homePane.getChildren().addAll(welHomeLabel, userN, passW, signInBtn, regisBtn);
             //add homePane to Center side
         rootBPane.setCenter(homePane);
 
@@ -97,13 +135,27 @@ public class Main extends Application {
         CalcSum.setText(func.getTotal());
         entryPane.setCenter(budgetEntries);
 
+        //^--- Profile ---
+        VBox profilePane = new VBox();
+        profilePane.setStyle("-fx-background-color: #0000ff");
+        profilePane.setAlignment(Pos.CENTER);
+        profilePane.setSpacing(0);
+            //Name Label
+        Label nameLabel = Formatting.makeLabel("NAME");
+        profilePane.setMargin(nameLabel, new Insets(5, 5, 5, 5));
+            //Username Label
+        Label userLabel = Formatting.makeLabel("username");
+        profilePane.setMargin(userLabel, new Insets(5, 5, 5, 5));
+        profilePane.getChildren().addAll(nameLabel, userLabel);
+
+
         //Left Navbar Setup
         VBox navBar = new VBox();
         navBar.setPadding(new Insets(20, 10, 20, 10));
         navBar.setSpacing(10);
         navBar.setStyle("-fx-background-color: #3A3B3C;");
         //Buttons Home and Tracker made above
-        navBar.getChildren().addAll(btnHome, btnCalc);
+        navBar.getChildren().addAll(btnHome, btnCalc, btnProfile);
             //add navBar to Left side
         rootBPane.setLeft(navBar);
         btnHome.setOnAction(new EventHandler<ActionEvent>() {
@@ -117,6 +169,10 @@ public class Main extends Application {
             public void handle(ActionEvent actionEvent) {
                 if (SignedIn) rootBPane.setCenter(entryPane);
             }
+        });
+        btnProfile.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) { if (SignedIn) rootBPane.setCenter(profilePane); }
         });
 
 
