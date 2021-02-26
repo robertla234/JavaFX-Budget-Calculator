@@ -51,6 +51,7 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 //TODO call verificiation of sign in to DB
+                
                 String username = userN.getText();
                 String password = passW.getText();
                 System.out.println(username + " " + password);
@@ -65,6 +66,7 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 //TODO open new registration window
+                Stage newWindow = new Stage();
 
                 VBox regLayout = new VBox();
                 regLayout.setStyle("-fx-background-color: #af00af");
@@ -92,14 +94,15 @@ public class Main extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         //TODO import action here
+                        newWindow.close();
                     }
                 });
 
-                        regLayout.getChildren().addAll(regWelcome, name, userN, passW, initialAmount);
-                Scene regScene = new Scene(regLayout, 400, 300);
+                        regLayout.getChildren().addAll(regWelcome, name, userN, passW, initialAmount, regisBtn);
+                Scene regScene = new Scene(regLayout, 300, 250);
 
                 //New Window (Stage)
-                Stage newWindow = new Stage();
+
                 newWindow.setTitle("Register New User");
                 newWindow.setScene(regScene);
                 newWindow.show();
