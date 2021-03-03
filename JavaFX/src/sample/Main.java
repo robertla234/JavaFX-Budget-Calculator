@@ -50,12 +50,11 @@ public class Main extends Application {
         signInBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //TODO call verificiation of sign in to DB
-                
+                //calls verificiation of sign in to DB
                 String username = userN.getText();
                 String password = passW.getText();
-                System.out.println(username + " " + password);
-                SignedIn = true;
+                System.out.println(username + " --- " + password);
+                SignedIn = func.signIn();
                 btnCalc.setVisible(true);
                 btnProfile.setVisible(true);
             }

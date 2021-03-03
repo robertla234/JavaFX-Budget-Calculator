@@ -1,5 +1,7 @@
 package sample;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,5 +31,14 @@ public class Functions {
         funcHold.add(new BudgetEntry(d, -200));
 
         return funcHold;
+    }
+
+    public boolean signIn(){
+        //TODO check with DB and return if exists
+        boolean signIn = true;
+        //URL url = new URL("http://localhost:8080/api/v1/user");
+        //HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        //con.setRequestMethod("GET");
+        return signIn;
     }
 }
