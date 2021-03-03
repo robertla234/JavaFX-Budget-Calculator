@@ -1,10 +1,12 @@
 package sample;
 
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Functions {
 
@@ -36,9 +38,30 @@ public class Functions {
     public boolean signIn(){
         //TODO check with DB and return if exists
         boolean signIn = true;
-        //URL url = new URL("http://localhost:8080/api/v1/user");
-        //HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        //con.setRequestMethod("GET");
+        try {
+            URL url = new URL("http://localhost:8080/api/v1/user");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.connect();
+
+            int responseCode = con.getResponseCode();
+            if (responseCode != 200) {
+                throw new RuntimeException("HttpResponseCode: " + responseCode);
+            } else {
+                String in = "";
+                Scanner scanner = new Scanner(url.openStream());
+                while (scanner.hasNext()) {
+                    in += scanner.nextLine();
+                }
+                scanner.close();
+
+                System.out.println(in);
+            }
+        } catch (IOException e) {
+            System.out.println("IOException");
+        }
+
+
         return signIn;
     }
 }
