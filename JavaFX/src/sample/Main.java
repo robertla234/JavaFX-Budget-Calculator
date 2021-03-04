@@ -84,6 +84,9 @@ public class Main extends Application {
                 TextField name = Formatting.makeTextField("Full Name");
                 regLayout.setMargin(name, new Insets(5, 20, 5, 20));
 
+                TextField email = Formatting.makeTextField("Email");
+                regLayout.setMargin(email, new Insets(5, 20, 5, 20));
+
                 TextField initialAmount = Formatting.makeTextField("initial amount");
                 regLayout.setMargin(initialAmount, new Insets(5, 20, 5, 20));
 
@@ -93,12 +96,19 @@ public class Main extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         //TODO import action here
+                        String username = userN.getText();
+                        String password = passW.getText();
+                        String nm = name.getText();
+                        String eml = email.getText();
+                        String init = initialAmount.getText();
+
+                        func.registerNew(username, password, eml, nm, init);
                         newWindow.close();
                     }
                 });
 
-                        regLayout.getChildren().addAll(regWelcome, name, userN, passW, initialAmount, regisBtn);
-                Scene regScene = new Scene(regLayout, 300, 250);
+                        regLayout.getChildren().addAll(regWelcome, name, email, userN, passW, initialAmount, regisBtn);
+                Scene regScene = new Scene(regLayout, 300, 300);
 
                 //New Window (Stage)
 

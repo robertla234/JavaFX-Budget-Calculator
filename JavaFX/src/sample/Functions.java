@@ -61,7 +61,42 @@ public class Functions {
             System.out.println("IOException");
         }
 
+        this.funcHold = storeEntries();
 
         return signIn;
+    }
+
+    public void registerNew(String uname, String pword, String email, String name, String initAmt){
+        //TODO check with DB and return if exists
+        try {
+            URL url = new URL("http://localhost:8080/api/v1/user");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json; utf-8");
+            con.setRequestProperty("Accept", "application/json");
+            con.setDoOutput(true);
+
+            String inString = "{\"username\": \""+uname+"\",\"password\": \""+pword+"\", \"email\": \""+email+"\", \"name\": \""+name+"\", \"initialAmount\": "+initAmt+"}";
+
+            OutputStream os = con.getOutputStream();
+            byte[] input = inString.getBytes("utf-8");
+            os.write(input, 0, input.length);
+
+            int responseCode = con.getResponseCode();
+            if (responseCode != 200) {
+                throw new RuntimeException("HttpResponseCode: " + responseCode);
+            } else {
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
+                StringBuilder response = new StringBuilder();
+                String outLine;
+                while((outLine = br.readLine()) != null){
+                    response.append(outLine.trim());
+                }
+
+                System.out.println(response.toString());
+            }
+        } catch (IOException e) {
+            System.out.println("IOException");
+        }
     }
 }

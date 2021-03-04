@@ -17,28 +17,38 @@ public class UserT {
     )
     private Long id;
     private String username;
+    private String password;
     private String email;
     private String name;
+    private int initialAmount;
 
     public UserT() {
     }
 
     public UserT(Long id,
                  String username,
+                 String password,
                  String email,
-                 String name) {
+                 String name,
+                 int initialAmount) {
         this.id = id;
         this.username = username;
+        this.password = password;
         this.email = email;
         this.name = name;
+        this.initialAmount = initialAmount;
     }
 
     public UserT(String username,
+                 String password,
                  String email,
-                 String name) {
+                 String name,
+                 int initialAmount) {
         this.username = username;
+        this.password = password;
         this.email = email;
         this.name = name;
+        this.initialAmount = initialAmount;
     }
 
     public Long getId() {
@@ -57,6 +67,14 @@ public class UserT {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -73,13 +91,23 @@ public class UserT {
         this.name = name;
     }
 
+    public int getInitialAmount() {
+        return initialAmount;
+    }
+
+    public void setInitialAmount(int initialAmount) {
+        this.initialAmount = initialAmount;
+    }
+
     @Override
     public String toString() {
         return "UserT{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
+                ", initialAmount=" + initialAmount +
                 '}';
     }
 }

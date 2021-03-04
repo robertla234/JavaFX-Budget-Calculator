@@ -17,8 +17,11 @@ public class UserTConfig {
             UserT shawn = new UserT(
                     1L,
                     "shawnevans222",
+                    "shawne22!",
                     "shawnevans222@gmail.com",
-                    "Shawn Evans");
+                    "Shawn Evans",
+                    300);
+
             repository.saveAll(
                     List.of(shawn)
             );
