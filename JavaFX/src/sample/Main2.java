@@ -1,19 +1,21 @@
 package sample;
 
-import javafx.application.Application;
+import com.sun.glass.ui.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.geometry.Insets;
+import javafx.stage.Stage;
+
 import java.util.Date;
 
-public class Main extends Application {
+public class Main2 {//extends Application {
+/*
 
     boolean SignedIn; //temp sign in indicator
 
@@ -26,6 +28,8 @@ public class Main extends Application {
 
         //pre-initialize of buttons for Sign In color change
         Button btnHome = Formatting.makeButton("Home");
+        Button btnCalc = Formatting.makeButtonHidden("Tracker");
+        Button btnProfile = Formatting.makeButtonHidden("Profile");
 
         //Main Scene Area setup
         //^--- Home ---
@@ -33,18 +37,30 @@ public class Main extends Application {
         homePane.setStyle("-fx-background-color: #ff0000");
         homePane.setAlignment(Pos.CENTER);
         homePane.setSpacing(0);
-            //Welcome Display for Home
+        //Welcome Display for Home
         Label welHomeLabel = Formatting.makeLabel("Welcome To Home");
         homePane.setMargin(welHomeLabel, new Insets(5, 5, 25, 5));
-            //Username Input
+        //Username Input
         TextField userN = Formatting.makeTextField("username");
         homePane.setMargin(userN, new Insets(5, 20, 5, 20));
-            //Password Input
+        //Password Input
         TextField passW = Formatting.makeTextFieldPass();
         homePane.setMargin(passW, new Insets(5, 20,5, 20));
-            //Sign In Button
+        //Sign In Button
         Button signInBtn = new Button("Sign In");
         homePane.setMargin(signInBtn, new Insets(5, 5, 5, 5));
+        signInBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                //calls verificiation of sign in to DB
+                String username = userN.getText();
+                String password = passW.getText();
+                System.out.println(username + " --- " + password);
+                SignedIn = func.signIn();
+                btnCalc.setVisible(true);
+                btnProfile.setVisible(true);
+            }
+        });
         Button regisBtn = Formatting.makeButton("Register");
         homePane.setMargin(regisBtn, new Insets(5, 5, 5, 5));
         regisBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -93,7 +109,7 @@ public class Main extends Application {
                     }
                 });
 
-                        regLayout.getChildren().addAll(regWelcome, name, email, userN, passW, initialAmount, regisBtn);
+                regLayout.getChildren().addAll(regWelcome, name, email, userN, passW, initialAmount, regisBtn);
                 Scene regScene = new Scene(regLayout, 300, 300);
 
                 //New Window (Stage)
@@ -104,8 +120,48 @@ public class Main extends Application {
             }
         });
         homePane.getChildren().addAll(welHomeLabel, userN, passW, signInBtn, regisBtn);
-            //add homePane to Center side
+        //add homePane to Center side
         rootBPane.setCenter(homePane);
+
+        //^--- Entries ---
+        BorderPane entryPane = new BorderPane();
+        entryPane.setStyle("-fx-background-color: #00ff00");
+        //Display Box for Current-In-Budget
+        Label CalcSum = new Label();
+        CalcSum.setMinHeight(20);
+        CalcSum.setMinWidth(100);
+        CalcSum.setStyle("-fx-padding: 10 10 10 10; -fx-background-color: #B3B3B3;");
+        entryPane.setTop(CalcSum);
+        entryPane.setMargin(CalcSum, new Insets(10));
+        entryPane.setAlignment(CalcSum, Pos.CENTER);
+        //Entry Table for Calc
+        TableView budgetEntries = new TableView();
+        TableColumn<BudgetEntry, Date> dateColumn = new TableColumn<>("Date");
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        TableColumn<BudgetEntry, Integer> amountColumn = new TableColumn<>("Amount");
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        budgetEntries.getColumns().add(dateColumn);
+        budgetEntries.getColumns().add(amountColumn);
+        //dateColumn.setSortType(TableColumn.SortType.);
+        for (int i = 0; i < func.getSize(); i++) {
+            budgetEntries.getItems().add(func.getEntry(i));
+        }
+        CalcSum.setText(func.getTotal());
+        entryPane.setCenter(budgetEntries);
+
+        //^--- Profile ---
+        VBox profilePane = new VBox();
+        profilePane.setStyle("-fx-background-color: #0000ff");
+        profilePane.setAlignment(Pos.CENTER);
+        profilePane.setSpacing(0);
+        //Name Label
+        Label nameLabel = Formatting.makeLabel("NAME");
+        profilePane.setMargin(nameLabel, new Insets(5, 5, 5, 5));
+        //Username Label
+        Label userLabel = Formatting.makeLabel("username");
+        profilePane.setMargin(userLabel, new Insets(5, 5, 5, 5));
+        profilePane.getChildren().addAll(nameLabel, userLabel);
+
 
         //Left Navbar Setup
         VBox navBar = new VBox();
@@ -113,8 +169,8 @@ public class Main extends Application {
         navBar.setSpacing(10);
         navBar.setStyle("-fx-background-color: #3A3B3C;");
         //Buttons Home and Tracker made above
-        navBar.getChildren().add(btnHome);
-            //add navBar to Left side
+        navBar.getChildren().addAll(btnHome, btnCalc, btnProfile);
+        //add navBar to Left side
         rootBPane.setLeft(navBar);
         btnHome.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -122,73 +178,17 @@ public class Main extends Application {
                 rootBPane.setCenter(homePane);
             }
         });
-
-
-        //Sign In and Main Windows Setup
-        signInBtn.setOnAction(new EventHandler<ActionEvent>() {
+        btnCalc.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //calls verificiation of sign in to DB
-                String username = userN.getText();
-                String password = passW.getText();
-                System.out.println(username + " --- " + password);
-                SignedIn = func.signIn();
-
-                //^--- Entries ---
-                BorderPane entryPane = new BorderPane();
-                entryPane.setStyle("-fx-background-color: #00ff00");
-                //Display Box for Current-In-Budget
-                Label CalcSum = new Label();
-                CalcSum.setMinHeight(20);
-                CalcSum.setMinWidth(100);
-                CalcSum.setStyle("-fx-padding: 10 10 10 10; -fx-background-color: #B3B3B3;");
-                entryPane.setTop(CalcSum);
-                entryPane.setMargin(CalcSum, new Insets(10));
-                entryPane.setAlignment(CalcSum, Pos.CENTER);
-                //Entry Table for Calc
-                TableView budgetEntries = new TableView();
-                TableColumn<BudgetEntry, Date> dateColumn = new TableColumn<>("Date");
-                dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-                TableColumn<BudgetEntry, Integer> amountColumn = new TableColumn<>("Amount");
-                amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
-                budgetEntries.getColumns().add(dateColumn);
-                budgetEntries.getColumns().add(amountColumn);
-                //dateColumn.setSortType(TableColumn.SortType.);
-                for (int i = 0; i < func.getSize(); i++) {
-                    budgetEntries.getItems().add(func.getEntry(i));
-                }
-                CalcSum.setText(func.getTotal());
-                entryPane.setCenter(budgetEntries);
-
-                //^--- Profile ---
-                VBox profilePane = new VBox();
-                profilePane.setStyle("-fx-background-color: #0000ff");
-                profilePane.setAlignment(Pos.CENTER);
-                profilePane.setSpacing(0);
-                //Name Label
-                Label nameLabel = Formatting.makeLabel("NAME");
-                profilePane.setMargin(nameLabel, new Insets(5, 5, 5, 5));
-                //Username Label
-                Label userLabel = Formatting.makeLabel("username");
-                profilePane.setMargin(userLabel, new Insets(5, 5, 5, 5));
-                profilePane.getChildren().addAll(nameLabel, userLabel);
-
-                //NavBar
-                Button btnCalc = Formatting.makeButton("Tracker");
-                Button btnProfile = Formatting.makeButton("Profile");
-                navBar.getChildren().addAll(btnCalc, btnProfile);
-                btnCalc.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        if (SignedIn) rootBPane.setCenter(entryPane);
-                    }
-                });
-                btnProfile.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) { if (SignedIn) rootBPane.setCenter(profilePane); }
-                });
+                if (SignedIn) rootBPane.setCenter(entryPane);
             }
         });
+        btnProfile.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) { if (SignedIn) rootBPane.setCenter(profilePane); }
+        });
+
 
         Scene scene = new Scene(rootBPane, 400, 300);
         primaryStage.setScene(scene);
@@ -197,7 +197,5 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
+*/
 }
-
-
