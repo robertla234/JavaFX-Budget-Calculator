@@ -21,6 +21,9 @@ public class UserTController {
         return userTService.getUsers();
     }
 
+    @GetMapping(path = "/test")
+    public String testGet(){ return "Test Get"; }
+
     @PostMapping
     public void registerNewUserT(@RequestBody UserT userT){
         userTService.addNewUser(userT);
