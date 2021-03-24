@@ -18,4 +18,12 @@ public class UserTemp {
     public String getUserFName() {
         return userFName;
     }
+
+    @Override
+    public String toString() {
+        return "UserTemp{" +
+                "userId=" + userId +
+                ", userFName='" + userFName + '\'' +
+                '}';
+    }
 }
