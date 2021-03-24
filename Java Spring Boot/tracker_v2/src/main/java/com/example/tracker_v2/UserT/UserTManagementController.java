@@ -1,5 +1,6 @@
 package com.example.tracker_v2.UserT;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -15,7 +16,11 @@ public class UserTManagementController {
             new UserTemp(3, "Ricky")
     );
 
+    //can do @PreAuthorize("hasAuthorizy('user:write')")
+    //in ASecurityConfig -> @EnableGlobalMethodSecurity(prePostEnabled = true)
+
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')") //method-level authorization
     public List<UserTemp> getAllUsers(){
         return USERS;
     }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,6 +19,7 @@ import static com.example.tracker_v2.Security.ApplicationUserRole.*;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
@@ -33,9 +35,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/api/**").hasRole(USER.name())
-                .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(USER_WRITE.name())
-                .antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(USER_WRITE.name())
-                .antMatchers(HttpMethod.PUT, "/management/api/**").hasAuthority(USER_WRITE.name())
+                //NOTE: ORDER MATTERS
+                .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(USER_WRITE.getPermission())
+                .antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(USER_WRITE.getPermission())
+                .antMatchers(HttpMethod.PUT, "/management/api/**").hasAuthority(USER_WRITE.getPermission())
                 .antMatchers(HttpMethod.GET, "/management/api/**").hasAnyRole(ADMIN.name())
                 .anyRequest()
                 .authenticated()
@@ -47,15 +50,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     protected UserDetailsService userDetailsService(){
         UserDetails u1234 = User.builder()
-                .username("1234")
+                .username("user")
                 .password(passwordEncoder.encode("password"))
-                .roles(USER.name()) //ROLE_USER
+                //.roles(USER.name()) //ROLE_USER
+                .authorities(USER.getGrantedAuthorities())
                 .build();
 
         UserDetails admin = User.builder()
                 .username("admin") //TODO: change not secure
-                .password(passwordEncoder.encode("123"))
-                .roles(ADMIN.name()) //ROLE_ADMIN
+                .password(passwordEncoder.encode("password"))
+                //.roles(ADMIN.name()) //ROLE_ADMIN
+                .authorities(ADMIN.getGrantedAuthorities())
                 .build();
 
         return new InMemoryUserDetailsManager(
