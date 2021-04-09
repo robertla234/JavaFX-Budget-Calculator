@@ -8,3 +8,6 @@ extracting a response from the API, I had realized security would be an issue.
 3/19/2021 -
 I am currently researching Spring Security implementation and beginning an API v2 that includes an PBAC, basic database tables
 to support those roles, and a Kerberos-style authentication layer. 
+
+4/9/2021 -
+Starting v3 to expand on the PBAC and start fresh to deal with issues connecting to the PostgreSQL database.
