@@ -1,4 +1,4 @@
-package com.example.tracker_v3.userR;
+package com.example.tracker_v3.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -9,39 +9,43 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 
 @Configuration
-public class UserRConfig {
-
+public class UserConfig {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserRConfig(PasswordEncoder passwordEncoder) {
+    public UserConfig(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(UserRRepository repository){
+    CommandLineRunner commandLineRunner(UserRepository userrepository){
         return args -> {
-            UserR userInitial = new UserR(
+            User userInitial = new User(
                     1L,
+                    "userInitial",
                     "testEmail@email.com",
                     "user",
                     "Test",
                     "User",
                     "1234567890",
-                    passwordEncoder.encode("password")
+                    passwordEncoder.encode("password"),
+                    true
             );
-            UserR userNext = new UserR(
+            User userNext = new User(
                     2L,
+                    "userNext",
                     "ttee@email.com",
                     "user",
                     "Test2",
                     "User2",
                     "0987654321",
-                    passwordEncoder.encode("password")
+                    passwordEncoder.encode("password"),
+                    true
             );
-            repository.saveAll(
+            userrepository.saveAll(
                     List.of(userInitial, userNext)
             );
         };
     }
+
 }

@@ -1,25 +1,32 @@
 package com.example.tracker_v3.security;
 
-import com.example.tracker_v3.userR.UserR;
-import com.example.tracker_v3.userR.UserRRepository;
+
+import com.example.tracker_v3.user.User;
+import com.example.tracker_v3.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class SecurityUserDetailsService implements UserDetailsService {
+
+    private UserRepository userRepository;
+
     @Autowired
-    private UserRRepository userRRepository;
+    public SecurityUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
-    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
-        UserR user = userRRepository.findUserRByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User email not present"));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not present"));
         return user;
     }
-    public void createUser(UserDetails user){
-        userRRepository.save((UserR) user);
-    }
+    //public void createUser(UserDetails user){
+    //    userRepository.save((User) user);
+    //}
+
 }

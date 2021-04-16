@@ -1,12 +1,15 @@
 package com.example.tracker_v3.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
-@Table
-public class User {
+@Table(name="\"User\"")
+public class User implements UserDetails {
     @Id
     @SequenceGenerator(
             name = "tracker_sequence",
@@ -27,6 +30,8 @@ public class User {
     private String phone;
     @JsonIgnore
     private String password;
+    @JsonIgnore
+    private boolean isAccountNonLocked;
 
     public User() {
     }
@@ -34,7 +39,8 @@ public class User {
     public User(Long id, String username,
                 String email, String role,
                 String fName, String lName,
-                String phone, String password) {
+                String phone, String password,
+                boolean isAccountNonLocked) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -43,12 +49,14 @@ public class User {
         this.lName = lName;
         this.phone = phone;
         this.password = password;
+        this.isAccountNonLocked = isAccountNonLocked;
     }
 
     public User(String username, String email,
                 String role, String fName,
                 String lName, String phone,
-                String password) {
+                String password,
+                boolean isAccountNonLocked) {
         this.username = username;
         this.email = email;
         this.role = role;
@@ -56,6 +64,7 @@ public class User {
         this.lName = lName;
         this.phone = phone;
         this.password = password;
+        this.isAccountNonLocked = isAccountNonLocked;
     }
 
     public Long getId() {
@@ -66,6 +75,7 @@ public class User {
         this.id = id;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
@@ -114,6 +124,7 @@ public class User {
         this.phone = phone;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -121,6 +132,44 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public boolean getAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        isAccountNonLocked = accountNonLocked;
+    }
+
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    } //TODO CHANGE LATER
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    } //TODO CHANGE LATER
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    } //TODO CHANGE LATER
+
+    @JsonIgnore
+    @Override
+    public boolean isEnabled() {
+        return true;
+    } //TODO CHANGE LATER
 
     @Override
     public String toString() {
@@ -133,6 +182,7 @@ public class User {
                 ", lName='" + lName + '\'' +
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
+                ", isAccountNonLocked=" + isAccountNonLocked +
                 '}';
     }
 }
