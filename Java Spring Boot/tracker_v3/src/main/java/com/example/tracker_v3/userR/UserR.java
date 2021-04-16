@@ -1,7 +1,4 @@
-package com.example.tracker_v3.user;
-
-
-
+package com.example.tracker_v3.userR;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,6 +18,7 @@ public class UserR {
             generator = "tracker_sequence"
     )
     private Long userId;
+    private String username;
     private String userEmail;
     @JsonIgnore
     private String userRole;

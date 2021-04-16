@@ -1,6 +1,5 @@
-package com.example.tracker_v3.user;
+package com.example.tracker_v3.userR;
 
-import org.apache.catalina.startup.UserConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

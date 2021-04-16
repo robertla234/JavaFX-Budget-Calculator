@@ -1,4 +1,4 @@
-package com.example.tracker_v3.user;
+package com.example.tracker_v3.userR;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
