@@ -1,6 +1,10 @@
 package com.example.tracker_v3.user;
 
 
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -18,10 +22,12 @@ public class UserR {
     )
     private Long userId;
     private String userEmail;
+    @JsonIgnore
     private String userRole;
     private String userFName;
     private String userLName;
     private String userPhone;
+    @JsonIgnore
     private String userPassword;
 
     public UserR() {
