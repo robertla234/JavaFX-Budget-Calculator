@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-//@Service
+@Service
 public class SecurityUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepository;
@@ -25,8 +25,5 @@ public class SecurityUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not present"));
         return user;
     }
-    //public void createUser(UserDetails user){
-    //    userRepository.save((User) user);
-    //}
 
 }
