@@ -23,7 +23,13 @@ public class UserService {
     }
 
     public List<User> getUser(List<Long> userid){
-        return userRepository.findAllById(userid);
+        List<User> userList= userRepository.findAllById(userid);
+        if (!userList.isEmpty()){
+            return userList;
+        }
+        else {
+            throw new IllegalStateException("User with id " + userid + " does not exist.");
+        }
     }
 
     public void addNewUser(User user) {
@@ -37,7 +43,7 @@ public class UserService {
     public void deleteUser(Long userid) {
         boolean exists = userRepository.existsById(userid);
         if (!exists) {
-            throw new IllegalStateException("Student with id " + userid + " does not exist.");
+            throw new IllegalStateException("User with id " + userid + " does not exist.");
         }
         userRepository.deleteById(userid);
     }

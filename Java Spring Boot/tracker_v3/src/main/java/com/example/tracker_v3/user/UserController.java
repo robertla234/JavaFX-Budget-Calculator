@@ -18,14 +18,8 @@ public class UserController {
     }
 
     @GetMapping
-    //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public List<User> getUsers(){
-        return userService.getUsers();
-    }
-
-    @GetMapping(path = "{userId}")
     //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public List<User> getUser(@PathVariable("userId") Long userid) {
+    public List<User> getUser(@RequestParam(value = "userId") Long userid) {
         List<Long> userList = new ArrayList<Long>(){{ add(userid); }};
         return userService.getUser(userList);
     }
@@ -35,19 +29,18 @@ public class UserController {
         userService.addNewUser(user);
     }
 
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping
     //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public void deleteUser(@PathVariable("id") Long id){
+    public void deleteUser(@RequestParam(value = "userId") Long id){
         userService.deleteUser(id);
     }
 
-    @PutMapping(path = "{id}")
+    @PutMapping
     public void updateUserT(
-            @PathVariable("id") Long userid,
-            @RequestParam(required = false) String fname,
-            @RequestParam(required = false) String lname,
-            @RequestParam(required = false) String email){
+            @RequestParam(value = "userId") Long userid,
+            @RequestParam(value = "firstName", required = false) String fname,
+            @RequestParam(value = "lastName", required = false) String lname,
+            @RequestParam(value = "email", required = false) String email){
         userService.updateUser(userid, fname, lname, email);
     }
-
 }
