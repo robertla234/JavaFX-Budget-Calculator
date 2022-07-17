@@ -1,6 +1,7 @@
 package com.example.tracker_v3.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,19 +19,20 @@ public class UserController {
     }
 
     @GetMapping
-    //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public List<User> getUser(@RequestParam(value = "userId") Long userid) {
         List<Long> userList = new ArrayList<Long>(){{ add(userid); }};
         return userService.getUser(userList);
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_DEFAULT')")
     public void registerNewUser(@RequestBody User user){
         userService.addNewUser(user);
     }
 
     @DeleteMapping
-    //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public void deleteUser(@RequestParam(value = "userId") Long id){
         userService.deleteUser(id);
     }

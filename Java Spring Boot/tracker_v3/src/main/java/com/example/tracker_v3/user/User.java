@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name="\"User\"")
@@ -20,6 +21,7 @@ public class User implements UserDetails {
             strategy = GenerationType.SEQUENCE,
             generator = "tracker_sequence"
     )
+    private final List<? extends GrantedAuthority> grantedAuthorities;
     private Long id;
     private String username;
     private String email;
@@ -33,14 +35,13 @@ public class User implements UserDetails {
     @JsonIgnore
     private boolean isAccountNonLocked;
 
-    public User() {
-    }
-
-    public User(Long id, String username,
+    public User(List<? extends GrantedAuthority> grantedAuthorities,
+                Long id, String username,
                 String email, String role,
                 String fName, String lName,
                 String phone, String password,
                 boolean isAccountNonLocked) {
+        this.grantedAuthorities = grantedAuthorities;
         this.id = id;
         this.username = username;
         this.email = email;
@@ -52,11 +53,13 @@ public class User implements UserDetails {
         this.isAccountNonLocked = isAccountNonLocked;
     }
 
-    public User(String username, String email,
+    public User(List<? extends GrantedAuthority> grantedAuthorities,
+                String username, String email,
                 String role, String fName,
                 String lName, String phone,
                 String password,
                 boolean isAccountNonLocked) {
+        this.grantedAuthorities = grantedAuthorities;
         this.username = username;
         this.email = email;
         this.role = role;
@@ -144,7 +147,7 @@ public class User implements UserDetails {
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return grantedAuthorities;
     } //TODO CHANGE LATER
 
     @JsonIgnore

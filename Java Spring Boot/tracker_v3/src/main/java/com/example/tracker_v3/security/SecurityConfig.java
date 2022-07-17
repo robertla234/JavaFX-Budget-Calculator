@@ -10,6 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static com.example.tracker_v3.security.AppUserPermission.*;
+import static com.example.tracker_v3.security.AppUserRole.*;
+
 @Configuration
 @EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -31,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http//.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
-                //.antMatchers("/api/**").permitAll() //TODO: set permissions
+                .antMatchers("/api/**").hasRole(USER.name()) //TODO: set permissions
                 .anyRequest()
                 .authenticated()
                 .and()

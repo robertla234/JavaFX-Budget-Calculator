@@ -4,9 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+
+import static com.example.tracker_v3.security.AppUserRole.USER;
+import static com.example.tracker_v3.security.AppUserRole.DEFAULT;
 
 @Configuration
 public class UserConfig {
@@ -20,8 +24,21 @@ public class UserConfig {
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userrepository){
         return args -> {
-            User userInitial = new User(
+            User userDefault = new User(
+                    (List<? extends GrantedAuthority>) DEFAULT.getGrantedAuthorities(),
                     1L,
+                    "userDefault",
+                    "defUser@email.com",
+                    "user",
+                    "Default",
+                    "User",
+                    "1234567890",
+                    passwordEncoder.encode("password"),
+                    true
+            );
+            User userInitial = new User(
+                    (List<? extends GrantedAuthority>) USER.getGrantedAuthorities(),
+                    2L,
                     "userInitial",
                     "testEmail@email.com",
                     "user",
@@ -32,7 +49,8 @@ public class UserConfig {
                     true
             );
             User userNext = new User(
-                    2L,
+                    (List<? extends GrantedAuthority>) USER.getGrantedAuthorities(),
+                    3L,
                     "userNext",
                     "ttee@email.com",
                     "user",
@@ -43,7 +61,7 @@ public class UserConfig {
                     true
             );
             userrepository.saveAll(
-                    List.of(userInitial, userNext)
+                    List.of(userDefault, userInitial, userNext)
             );
         };
     }
